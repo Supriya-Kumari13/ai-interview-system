@@ -10,3 +10,6 @@ class Question(Base):
     question = Column(String)
     skill = Column(String)
     difficulty = Column(String)
+    competency = Column(String)
+    role = Column(String)
+    reference_answer = Column(String)

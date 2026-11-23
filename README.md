@@ -23,13 +23,12 @@ The backend is built with FastAPI and Uvicorn. The current API root endpoint is 
 ## Requirements
 
 - Python 3.10 or later
-- FastAPI
-- Uvicorn
+- Install dependencies from `requirements.txt`
 
-The dependencies may already be installed in the project. For a new environment, install them with:
+From the project root, install the dependencies with:
 
 ```powershell
-pip install fastapi uvicorn
+.\venv\Scripts\python.exe -m pip install -r requirements.txt
 ```
 
 ## Setup and Installation
@@ -53,18 +52,18 @@ Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
 .\venv\Scripts\Activate.ps1
 ```
 
-### 3. Install the backend dependencies
+### 3. Configure Gemini
 
-```powershell
-pip install fastapi uvicorn
-```
+Copy `.env.example` to `.env` and replace `add_your_key_here` with a Gemini API key. Keep `.env` private; it is ignored by Git. Do not paste the key into chat or commit it.
+
+Answer evaluation sends the interview question, reference answer, and candidate answer to Gemini for processing. The request opts out of Gemini server-side interaction storage.
 
 ## Run the Backend
 
 From the project root:
 
 ```powershell
-uvicorn backend.main:app --reload
+.\venv\Scripts\python.exe -m uvicorn backend.main:app --reload
 ```
 
 Default backend URLs:
@@ -72,6 +71,12 @@ Default backend URLs:
 - API: `http://127.0.0.1:8000`
 - Swagger UI: `http://127.0.0.1:8000/docs`
 - ReDoc: `http://127.0.0.1:8000/redoc`
+
+## Evaluate an Answer
+
+1. Submit an answer using `POST /answers`.
+2. Use the returned answer ID with `POST /answers/{answer_id}/evaluate`.
+3. The response includes five rubric scores (0-5), an overall score (0-100), feedback, strengths, and improvement suggestions. The evaluation is saved in SQLite.
 
 ## Development Status
 
